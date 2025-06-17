@@ -1,0 +1,2460 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '496057096794216');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=496057096794216&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+
+  <meta charset="UTF-8">
+  <title>GOFUN - 線上娛樂新選擇</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+
+/* 愛心特效樣式 */
+.heart {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.heart::before,
+.heart::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 10px;
+  height: 16px;
+  border-radius: 50px 50px 0 0;
+  background: rgba(255, 20, 147, 0.8); /* 粉紅色愛心 */
+}
+
+.heart::before {
+  left: 0;
+  transform: rotate(-45deg);
+  transform-origin: 100% 100%;
+}
+
+.heart::after {
+  left: 0;
+  transform: rotate(45deg);
+  transform-origin: 0 100%;
+}
+
+/* 愛心上升動畫 */
+@keyframes floatHeart {
+  0% {
+    transform: translateY(0) scale(0.3) rotate(0deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-80px) scale(1.2) rotate(10deg);
+    opacity: 0;
+  }
+}
+.fixed-mascot {
+  position: fixed !important; /* 強制使用固定定位 */
+  bottom: 20px !important;
+  right: 15px !important;
+  left: auto !important;
+  top: auto !important;
+  z-index: 1000;
+  width: 120px;
+  height: auto;
+  transform-origin: bottom right !important;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.fixed-mascot:hover {
+  transform: scale(1.1);
+}
+
+.fixed-mascot img {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
+}
+
+/* 聯絡模態框樣式 */
+.contact-modal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  overflow: auto;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.modal-content {
+  position: relative;
+  background: linear-gradient(135deg, #050518 0%, #0a1a2e 100%);
+  margin: 10vh auto;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 20px;
+  box-shadow: 0 0 50px rgba(0, 230, 255, 0.5);
+  overflow: hidden;
+  transform: translateY(50px) scale(0.95);
+  transition: all 0.6s cubic-bezier(0.17, 0.84, 0.44, 1);
+  border: 1px solid rgba(0, 230, 255, 0.3);
+  animation: glowingBorder 4s infinite;
+}
+
+.modal-active .modal-content {
+  transform: translateY(0) scale(1);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: rgba(0, 20, 40, 0.8);
+  border-bottom: 1px solid rgba(0, 230, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.modal-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(0, 230, 255, 0.2),
+    transparent,
+    rgba(76, 0, 255, 0.2),
+    transparent);
+  transform: translateX(-100%);
+  animation: headerGlow 8s linear infinite;
+}
+
+.modal-logo-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.modal-logo {
+  height: 40px;
+  filter: drop-shadow(0 0 10px rgba(0, 230, 255, 0.7));
+}
+
+.close-modal {
+  font-size: 28px;
+  font-weight: bold;
+  color: #00e2ff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(0, 230, 255, 0.1);
+}
+
+.close-modal:hover {
+  color: #fff;
+  background: rgba(0, 230, 255, 0.2);
+  box-shadow: 0 0 15px rgba(0, 230, 255, 0.5);
+}
+
+.modal-body {
+  padding: 25px;
+  position: relative;
+  z-index: 1;
+}
+
+.modal-title {
+  color: #fff;
+  font-size: 1.8rem;
+  text-align: center;
+  margin-bottom: 30px;
+  text-shadow: 0 0 10px rgba(0, 230, 255, 0.5);
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.highlight-text {
+  color: #00e2ff;
+  font-weight: 700;
+  position: relative;
+  display: inline-block;
+}
+
+.highlight-text::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00e2ff, transparent);
+  animation: pulse 2s infinite;
+}
+
+.contact-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  .contact-option {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+.contact-option::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  z-index: -1;
+}
+
+.contact-option::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, rgba(0, 230, 255, 0.5), transparent, rgba(76, 0, 255, 0.5));
+  z-index: -2;
+  filter: blur(10px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 15px;
+}
+
+.contact-option:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.contact-option:hover::after {
+  opacity: 1;
+}
+
+/* 聯絡選項樣式 */
+.telegram-option {
+  background: linear-gradient(135deg, rgba(43, 90, 223, 0.2), rgba(86, 130, 233, 0.1));
+}
+
+.youtube-option {
+  background: linear-gradient(135deg, rgba(255, 0, 0, 0.2), rgba(255, 94, 94, 0.1));
+}
+
+.line-option {
+  background: linear-gradient(135deg, rgba(6, 199, 85, 0.2), rgba(94, 239, 155, 0.1));
+}
+
+.telegram-vip-option {
+  background: linear-gradient(135deg, rgba(76, 0, 255, 0.2), rgba(140, 82, 255, 0.1));
+}
+
+.telegram-game-option {
+  background: linear-gradient(135deg, rgba(76, 0, 255, 0.2), rgba(140, 82, 255, 0.1));
+}
+
+.contact-icon-wrapper {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-radius: 50%;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.telegram-option .contact-icon-wrapper {
+  background: linear-gradient(135deg, #2b5adf, #5682e9);
+  box-shadow: 0 0 15px rgba(43, 90, 223, 0.5);
+}
+
+.youtube-option .contact-icon-wrapper {
+  background: linear-gradient(135deg, #ff0000, #ff5e5e);
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+}
+
+.line-option .contact-icon-wrapper {
+  background: linear-gradient(135deg, #06c755, #5eef9b);
+  box-shadow: 0 0 15px rgba(6, 199, 85, 0.5);
+}
+
+.telegram-vip-option .contact-icon-wrapper,
+.telegram-game-option .contact-icon-wrapper {
+  background: linear-gradient(135deg, #4c00ff, #8c52ff);
+  box-shadow: 0 0 15px rgba(76, 0, 255, 0.5);
+  position: relative;
+}
+
+.contact-icon-wrapper svg {
+  width: 20px;
+  height: 20px;
+  stroke: #fff;
+  fill: none;
+}
+
+.vip-badge, .game-badge {
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  background: linear-gradient(135deg, #ff6b00, #ffb700);
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: bold;
+  padding: 2px 5px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(255, 107, 0, 0.5);
+}
+
+.contact-info-text h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 5px;
+}
+
+.contact-info-text p {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* 註冊橫幅樣式 */
+.register-banner {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(0, 230, 255, 0.1), rgba(76, 0, 255, 0.15));
+  border-radius: 15px;
+  margin-bottom: 25px;
+  border: 1px solid rgba(0, 230, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.register-banner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(0, 230, 255, 0.2),
+    transparent,
+    rgba(76, 0, 255, 0.2),
+    transparent);
+  transform: translateX(-100%);
+  animation: bannerGlow 8s linear infinite;
+}
+
+.register-icon {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #00e2ff, #4c00ff);
+  border-radius: 50%;
+  margin-right: 15px;
+  box-shadow: 0 0 15px rgba(0, 230, 255, 0.5);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.register-icon svg {
+  width: 24px;
+  height: 24px;
+  stroke: #fff;
+  fill: none;
+}
+
+.register-text {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.register-text h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 5px;
+}
+
+.register-text p {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+
+.register-button {
+  background: linear-gradient(90deg, #4c00ff, #8c52ff);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 10px 15px;
+  border-radius: 50px;
+  text-align: center;
+  white-space: nowrap;
+  box-shadow: 0 5px 15px rgba(76, 0, 255, 0.3);
+  border: none;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transition: all 0.3s ease;
+  margin-left: 15px;
+  flex-shrink: 0;
+}
+
+.register-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(76, 0, 255, 0.5);
+}
+
+.register-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+
+.register-button:hover::before {
+  transform: translateX(100%);
+}
+
+/* 模態框粒子效果 */
+.modal-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.modal-particle {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  opacity: 0;
+}
+
+/* 爆炸粒子特效 */
+.explosion {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #00e2ff;
+  pointer-events: none;
+  z-index: 1999;
+  opacity: 0;
+}
+
+/* 吉祥物動畫效果 */
+@keyframes mascotIdleFixed {
+  0%, 20%, 50%, 80%, 100% {
+    transform: scale(1) rotate(0deg);
+    filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
+  }
+  5% {
+    transform: scale(1.05) rotate(3deg);
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.7)); /* 白色陰影 */
+  }
+  25% {
+    transform: scale(1.03) rotate(-2deg);
+    filter: drop-shadow(0 0 12px rgba(0, 0, 0, 0.6)); /* 黑色陰影 */
+  }
+  55% {
+    transform: scale(1.08) rotate(2deg);
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8)); /* 白色陰影 */
+  }
+  85% {
+    transform: scale(1.04) rotate(-3deg);
+    filter: drop-shadow(0 0 15px rgba(0, 0, 0, 0.6)); /* 黑色陰影 */
+  }
+}
+
+@keyframes mascotBounceFixed {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
+  }
+  40% {
+    transform: translateY(-20px) scale(1.1);
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8)); /* 白色陰影 */
+  }
+  60% {
+    transform: translateY(-15px) scale(1.08);
+    filter: drop-shadow(0 0 18px rgba(0, 0, 0, 0.7)); /* 黑色陰影 */
+  }
+  80% {
+    transform: translateY(-5px) scale(1.05);
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.6)); /* 白色陰影 */
+  }
+}
+
+@keyframes mascotShakeFixed {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+    filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: rotate(-5deg) scale(1.05);
+    filter: drop-shadow(0 0 15px rgba(0, 0, 0, 0.6)); /* 黑色陰影 */
+  }
+  20%, 40%, 60%, 80% {
+    transform: rotate(5deg) scale(1.05);
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.6)); /* 白色陰影 */
+  }
+}
+
+@keyframes headerGlow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(50%); }
+}
+
+@keyframes bannerGlow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(50%); }
+}
+
+@keyframes pulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 1; }
+  100% { opacity: 0.5; }
+}
+
+@keyframes modalFloat {
+  0% {
+    transform: translateY(100%) translateX(0) scale(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.8;
+  }
+  80% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(-100%) translateX(20px) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes glowingBorder {
+  0% { box-shadow: 0 0 25px rgba(0, 230, 255, 0.5); }
+  50% { box-shadow: 0 0 40px rgba(76, 0, 255, 0.7); }
+  100% { box-shadow: 0 0 25px rgba(0, 230, 255, 0.5); }
+}
+
+/* 顯示模態框特效 */
+.modal-active {
+  display: block;
+  opacity: 1;
+}
+
+/* 響應式樣式 - 在較小螢幕上調整 */
+@media (max-width: 768px) {
+  .fixed-mascot {
+    width: 100px;
+    bottom: 15px;
+    right: 10px;
+  }
+
+  .contact-options {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-title {
+    font-size: 1.5rem;
+  }
+
+  .contact-option {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .fixed-mascot {
+    width: 80px;
+    bottom: 10px;
+    right: 8px;
+  }
+
+  .register-banner {
+    flex-direction: column;
+    text-align: center;
+    padding: 15px;
+  }
+
+  .register-icon {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .register-text {
+    margin-bottom: 10px;
+  }
+
+  .register-button {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+    /* 設定基礎色彩變數 */
+    :root {
+      --primary-bg: #ffffff;
+      --primary-dark: #f8f8f8;
+      --primary-darker: #f0f0f0;
+      --primary-accent: #a69f8a;
+      --primary-text: #5c5645;
+      --secondary-text: #82796a;
+      --highlight: #c1b496;
+      --highlight-light: #d8cfb9;
+      --accent: #8c7e65;
+      --shadow-color: rgba(166, 159, 138, 0.2);
+      --border-color: rgba(166, 159, 138, 0.3);
+    }
+
+    /* 浮動按鈕樣式 */
+    .fixed-buttons {
+      position: fixed;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      z-index: 1000;
+      padding: 0 15px;
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .fixed-buttons:hover {
+      transform: scale(1.02);
+    }
+
+    .fixed-btn {
+      flex: 1;
+      max-width: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(45deg, #a69f8a, #c1b496);
+      color: var(--primary-bg);
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding: 16px 20px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(166, 159, 138, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      letter-spacing: 1px;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      backdrop-filter: blur(5px);
+    }
+
+    /* 發光邊框效果 */
+    .fixed-btn::after {
+      content: '';
+      position: absolute;
+      inset: -1px; /* 邊框效果 */
+      background: linear-gradient(45deg, #a69f8a, #c1b496, #b8ae95, #a69f8a);
+      background-size: 400%;
+      z-index: -1;
+      filter: blur(5px);
+      animation: glowing 10s linear infinite;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+      border-radius: 14px;
+    }
+
+    .fixed-btn:hover::after {
+      opacity: 1;
+    }
+
+    @keyframes glowing {
+      0% { background-position: 0 0; }
+      50% { background-position: 400% 0; }
+      100% { background-position: 0 0; }
+    }
+
+    .fixed-btn:hover {
+      transform: translateY(-5px) scale(1.05);
+      border-color: rgba(255, 255, 255, 0.4);
+      border-radius: 14px;
+      color: var(--primary-bg);
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+    }
+
+    .fixed-btn:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    /* 聯繫按鈕的特殊效果 */
+    .fixed-btn-blue {
+      background: linear-gradient(45deg, #8c7e65, #a69f8a);
+    }
+
+    /* 按鈕內部圖標 */
+    .btn-icon {
+      margin-left: 10px;
+      display: inline-flex;
+      transition: transform 0.3s ease;
+    }
+
+    .fixed-btn:hover .btn-icon {
+      transform: translateX(4px);
+    }
+
+    /* 按鈕點擊波紋效果 */
+    .fixed-btn .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      pointer-events: none;
+    }
+
+    @keyframes ripple {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+
+    /* 閃光效果 */
+    .fixed-btn .shine {
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      right: -50%;
+      bottom: -50%;
+      background: linear-gradient(45deg,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0.03) 50%,
+        rgba(255,255,255,0) 100%
+      );
+      transform: rotate(25deg);
+      animation: shine 3s infinite;
+    }
+
+    @keyframes shine {
+      0% {transform: rotate(25deg) translateX(-100%);}
+      20% {transform: rotate(25deg) translateX(100%);}
+      100% {transform: rotate(25deg) translateX(100%);}
+    }
+
+    /* 浮動小點裝飾 */
+    .fixed-btn .dots {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .fixed-btn .dot {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      opacity: 0;
+    }
+
+    .fixed-btn:hover .dot {
+      animation: dot-float 1s linear forwards;
+    }
+
+    @keyframes dot-float {
+      0% {
+        opacity: 0.7;
+        transform: translateY(0);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Noto Sans TC', "Microsoft JhengHei", sans-serif;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: var(--primary-bg);
+      color: var(--primary-text);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.3s ease;
+    }
+
+    .container {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      background: var(--primary-bg);
+      overflow: hidden;
+      padding-bottom: 30px;
+    }
+
+    /* 背景紋理效果 */
+    .container:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(193, 180, 150, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 90%, rgba(140, 126, 101, 0.05) 0%, transparent 40%),
+        linear-gradient(90deg, rgba(166, 159, 138, 0.03) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(166, 159, 138, 0.03) 1px, transparent 1px);
+      background-size: 100%, 100%, 20px 20px, 20px 20px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-logo {
+      height: auto;
+      max-width: 180px;
+      filter: drop-shadow(0 0 8px rgba(166, 159, 138, 0.5));
+    }
+
+    .profile-section {
+      position: relative;
+      padding: 30px 20px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(248, 248, 248, 0.4);
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .profile-section::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 40%;
+      background: linear-gradient(to top, rgba(248, 248, 248, 0.8), transparent);
+      z-index: 0;
+    }
+
+    .profile-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .profile-image-container {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .profile-image {
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      border: 5px solid var(--highlight);
+      box-shadow: 0 0 35px rgba(166, 159, 138, 0.7);
+      object-fit: cover;
+      background: linear-gradient(45deg, var(--primary-dark), var(--primary-darker));
+    }
+
+    .profile-status {
+      position: absolute;
+      bottom: 15px;
+      right: 15px;
+      width: 35px;
+      height: 35px;
+      background: var(--primary-accent);
+      border-radius: 50%;
+      border: 3px solid var(--primary-bg);
+      box-shadow: 0 0 15px rgba(166, 159, 138, 0.7);
+    }
+
+    .profile-name {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary-text);
+      text-shadow: 0 0 12px rgba(166, 159, 138, 0.7);
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+      margin-top: 15px;
+    }
+
+    .profile-title {
+      font-size: 1.2rem;
+      color: var(--secondary-text);
+      background: rgba(166, 159, 138, 0.1);
+      padding: 8px 20px;
+      border-radius: 25px;
+      margin-bottom: 20px;
+      backdrop-filter: blur(4px);
+      border: 1px solid var(--border-color);
+    }
+
+    .profile-stats {
+      display: flex;
+      width: 100%;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 5px;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .stat-value {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: rgba(92, 86, 69, 0.7);
+    }
+
+    .section {
+      margin: 0 15px 20px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: rgba(248, 248, 248, 0.6);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(166, 159, 138, 0.15);
+      box-shadow: 0 8px 20px rgba(140, 126, 101, 0.2);
+    }
+
+    .section-header {
+      background: rgba(240, 240, 240, 0.7);
+      padding: 12px 15px;
+      border-bottom: 1px solid rgba(166, 159, 138, 0.2);
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary-text);
+      margin: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .section-title::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: var(--primary-accent);
+      border-radius: 50%;
+      margin-right: 10px;
+      box-shadow: 0 0 10px rgba(166, 159, 138, 0.7);
+    }
+
+    .section-content {
+      padding: 15px;
+    }
+
+    /* 平台介紹單行 */
+    .platform-intro {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+    }
+
+    .platform-intro-label {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--accent);
+      margin-right: 15px;
+      white-space: nowrap;
+    }
+
+    .platform-intro-content {
+      flex: 1;
+    }
+
+    .game-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--primary-accent);
+      text-shadow: 0 0 5px rgba(166, 159, 138, 0.7);
+      margin-bottom: 5px;
+      line-height: 1.3;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: var(--primary-text);
+      display: block;
+      padding: 5px 10px;
+      border-radius: 30px;
+      background: linear-gradient(90deg, rgba(193, 180, 150, 0.2), rgba(140, 126, 101, 0.2));
+      width: fit-content;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 0 15px rgba(166, 159, 138, 0.15);
+    }
+
+    .promo-text {
+      font-size: 1.05rem;
+      margin-bottom: 15px;
+      line-height: 1.4;
+      font-weight: 500;
+      color: var(--primary-text);
+      display: flex;
+      align-items: center;
+      background: rgba(193, 180, 150, 0.05);
+      padding: 10px 15px;
+      border-radius: 8px;
+      border-left: 3px solid var(--primary-accent);
+      transition: all 0.3s ease;
+    }
+
+    .promo-text:last-child {
+      margin-bottom: 0;
+    }
+
+    .promo-text:before {
+      content: '»';
+      color: var(--primary-accent);
+      margin-right: 10px;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .video-container {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 0 20px rgba(92, 86, 69, 0.5);
+      position: relative;
+    }
+
+    .video-container:before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      border-radius: 14px;
+      background: linear-gradient(45deg, rgba(166, 159, 138, 0.5), transparent, rgba(166, 159, 138, 0.5));
+      z-index: -1;
+      animation: rotate 6s linear infinite;
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .video-container video, .video-container iframe {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: var(--primary-bg);
+    }
+
+    .reason-item {
+      margin-bottom: 15px;
+      line-height: 1.4;
+      color: var(--primary-text);
+      padding: 12px;
+      border-radius: 8px;
+      background: rgba(193, 180, 150, 0.05);
+      border-left: 3px solid var(--primary-accent);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .reason-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .reason-item::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, rgba(166, 159, 138, 0.1), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .reason-item:active::after {
+      opacity: 1;
+    }
+
+    .reason-number {
+      font-weight: bold;
+      color: var(--accent);
+      display: inline-block;
+      margin-right: 8px;
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+      text-align: center;
+      background: rgba(193, 180, 150, 0.1);
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(140, 126, 101, 0.2);
+    }
+
+    .reason-detail {
+      padding-left: 32px;
+      display: block;
+      color: var(--secondary-text);
+      font-size: 0.9rem;
+      margin-top: 5px;
+      font-weight: 300;
+    }
+
+    .cta-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin: 0 15px 20px;
+    }
+
+    .cta-btn {
+      display: block;
+      background: linear-gradient(90deg, var(--primary-accent), var(--highlight));
+      color: var(--primary-bg);
+      font-weight: 700;
+      font-size: 1.2rem;
+      padding: 16px 20px;
+      border-radius: 50px;
+      text-align: center;
+      box-shadow: 0 5px 20px rgba(166, 159, 138, 0.4);
+      border: none;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      letter-spacing: 1px;
+    }
+
+    .cta-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.5s ease;
+    }
+
+    .cta-btn:active::before {
+      transform: translateX(100%);
+    }
+
+    .cta-btn:active {
+      transform: scale(0.98);
+    }
+
+    .contact-btn {
+      display: block;
+      background: linear-gradient(90deg, var(--accent), var(--primary-accent));
+      color: var(--primary-bg);
+      font-weight: 700;
+      font-size: 1.2rem;
+      padding: 16px 20px;
+      border-radius: 50px;
+      text-align: center;
+      box-shadow: 0 5px 20px rgba(140, 126, 101, 0.4);
+      border: none;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      letter-spacing: 1px;
+    }
+
+    .contact-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.5s ease;
+    }
+
+    .contact-btn:active::before {
+      transform: translateX(100%);
+    }
+
+    .contact-btn:active {
+      transform: scale(0.98);
+    }
+
+    .contact-info {
+      text-align: center;
+      margin: 0 15px;
+      font-size: 1rem;
+      color: var(--secondary-text);
+      background: rgba(248, 248, 248, 0.6);
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px dashed rgba(166, 159, 138, 0.4);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 5px 15px rgba(92, 86, 69, 0.2);
+    }
+
+    .contact-info-highlight {
+      font-weight: 700;
+      color: var(--accent);
+      font-size: 1.2rem;
+      display: block;
+      margin-top: 5px;
+    }
+
+    /* 浮動粒子效果 */
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .particle {
+      position: absolute;
+      display: block;
+      pointer-events: none;
+      border-radius: 50%;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0.1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+      100% {
+        transform: translateY(-100vh) translateX(20px);
+        opacity: 0.1;
+      }
+    }
+
+    .glow {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(193, 180, 150, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 0.1; }
+      50% { opacity: 0.7; }
+    }
+
+    .wave {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 15px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z' opacity='.25' fill='%23a69f8a'%3E%3C/path%3E%3Cpath d='M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z' opacity='.5' fill='%23a69f8a'%3E%3C/path%3E%3Cpath d='M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z' fill='%23a69f8a' opacity='.75'%3E%3C/path%3E%3C/svg%3E");
+      background-size: 1200px 100%;
+      z-index: 0;
+      animation: wave 12s linear infinite;
+      opacity: 0.15;
+    }
+
+    @keyframes wave {
+      0% { background-position-x: 0; }
+      100% { background-position-x: 1200px; }
+    }
+
+    /* 添加新卡片按鈕樣式 */
+    .card-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 20px 0 80px 15px;
+      max-width: 50%;
+      padding: 0;
+      position: relative;
+      z-index: 10;
+    }
+
+    .card-btn {
+      display: flex;
+      align-items: center;
+      padding: 10px 12px; /* 減小內邊距 */
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    .card-icon-wrapper {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 7px;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+
+    .card-icon-wrapper svg {
+      width: 16px;
+      height: 16px;
+      stroke: #fff;
+      fill: none;
+    }
+
+    .card-text {
+      flex: 1;
+    }
+
+    .card-text h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fff;
+      margin: 0 0 2px 0;
+    }
+
+    .card-text p {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.8);
+      margin: 0;
+    }
+
+    /* 按鈕顏色樣式 */
+    .youtube-card {
+      background: linear-gradient(135deg, #c00, #ff3333);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .youtube-card .card-icon-wrapper {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .line-card {
+      background: linear-gradient(135deg, #06c755, #07e060);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .line-card .card-icon-wrapper {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .telegram-card {
+      background: linear-gradient(135deg, #0088cc, #18a2e5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .telegram-card .card-icon-wrapper {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+
+    .card-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+
+    .card-btn:hover::before {
+      transform: translateX(100%);
+    }
+
+  .instagram-option {
+    background: linear-gradient(135deg, rgba(225, 48, 108, 0.2), rgba(253, 29, 29, 0.1), rgba(245, 96, 64, 0.1));
+  }
+
+  .instagram-option .contact-icon-wrapper {
+    background: linear-gradient(135deg, #e1306c, #fd1d1d, #f56040);
+    box-shadow: 0 0 15px rgba(225, 48, 108, 0.5);
+  }
+
+
+  .tiktok-option {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.2), rgba(37, 244, 238, 0.1), rgba(254, 44, 85, 0.1));
+  }
+
+  .tiktok-option .contact-icon-wrapper {
+    background: linear-gradient(135deg, #000000, #25F4EE, #FE2C55);
+    box-shadow: 0 0 15px rgba(254, 44, 85, 0.5);
+  }
+
+  .telegram-option,
+  [data-link*="xin_165"] {
+    order: 1 !important;
+  }
+
+  .instagram-option,
+  [data-link*="instagram.com"] {
+    order: 2 !important;
+  }
+
+  .tiktok-option,
+  [data-link*="tiktok.com"] {
+    order: 3 !important;
+  }
+
+  .youtube-option,
+  [data-link*="youtube.com"] {
+    order: 4 !important;
+  }
+
+  .instagram-card {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .instagram-card .card-icon-wrapper {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+
+  .tiktok-card {
+    background: linear-gradient(45deg, #000000, #25F4EE 40%, #FE2C55 60%, #000000);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .tiktok-card .card-icon-wrapper {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  /* 排序規則更新 */
+  .telegram-card,
+  a[href*="xin_165"],
+  a[data-link*="xin_165"] {
+    order: 1 !important;
+  }
+
+  .instagram-card,
+  a[href*="instagram.com"],
+  a[data-link*="instagram.com"] {
+    order: 2 !important;
+  }
+
+  .tiktok-card,
+  a[href*="tiktok.com"],
+  a[data-link*="tiktok.com"] {
+    order: 3 !important;
+  }
+
+  .youtube-card,
+  a[href*="youtube.com"],
+  a[data-link*="youtube.com"] {
+    order: 4 !important;
+  }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="particles" id="particles">
+      <!-- JS will insert particles here -->
+    </div>
+
+    <div class="wave"></div>
+
+    <header class="header">
+      <img src="images/logo.png" alt="GOFUN" class="header-logo">
+    </header>
+
+
+<section class="section" style="margin-top: 20px;">
+  <div class="section-content">
+    <div style="border-radius: 12px; overflow: hidden; border: 1px solid rgba(166, 159, 138, 0.3); box-shadow: 0 0 20px rgba(92, 86, 69, 0.5);">
+      <img src="images/首頁.jpg" alt="GoFun平台" style="width: 100%; height: auto; display: block;">
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-header" style="display: flex; align-items: center; flex-wrap: wrap;">
+    <div style="flex: 1;">
+      <span style="color: #82796a; font-weight: 700; font-size: 1.3rem;">亞州第一USDT娛樂平台</span>
+      <span style="display: block; color: #5c5645; font-size: 0.9rem; margin-top: 5px;">在家玩手機就能發財 線上娛樂最佳選擇</span>
+    </div>
+  </div>
+  <div class="section-content" style="margin-top: 15px;">
+
+    <div style="display: flex; gap: 15px; margin-bottom: 10px;">
+
+      <div style="flex: 1;">
+        <div class="video-container">
+          <iframe width="100%" height="315" src="https://www.youtube.com/embed/FO1-AOCjpL4?autoplay=1&loop=1&playlist=FO1-AOCjpL4&mute=1" title="YouTube短视频" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+
+
+      <div style="flex: 1;">
+        <div class="video-container">
+          <iframe width="100%" height="315" src="https://www.youtube.com/embed/Zp5SRcpSKjE?autoplay=1&loop=1&playlist=Zp5SRcpSKjE&mute=1" title="平台介绍2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-header">
+    <h3 class="section-title">為什麼你必須得玩GoFun</h3>
+  </div>
+  <div class="section-content">
+    <div class="reason-item">
+      <span class="reason-number">1</span>不需身份認證
+      <span class="reason-detail">免實名認證 匿名直接玩</span>
+    </div>
+    <div class="reason-item">
+      <span class="reason-number">2</span>全球熱門遊戲全收錄
+      <span class="reason-detail">百家/電子/捕魚機 收錄千款遊戲</span>
+      <span class="reason-detail">美女荷官坐鎮、網美主播即時互動</span>
+    </div>
+    <div class="reason-item" style="position: relative; padding-bottom: 60px;">
+      <span class="reason-number">3</span>⬐多種充值渠道↴
+      <span class="reason-detail">Apple Pay / 轉速快 / USDT</span>
+      <span class="reason-detail">©️匯旺充值代碼：99168</span>
+      <span class="reason-detail">🌟ABA充值代碼：991680168</span>
+    </div>
+
+
+<div style="position: absolute; bottom: 40px; left: 0; right: 0; display: flex; justify-content: center; align-items: center; gap: 12px; margin-top: 15px; flex-wrap: wrap; padding: 0 10px;">
+  <img src="images/USDT.webp" alt="USDT" style="height: 32px; width: auto; border-radius: 50%; box-shadow: 0 0 10px rgba(166, 159, 138, 0.6); background-color: rgba(255, 255, 255, 0.9); padding: 3px;">
+  <img src="images/BTC.webp" alt="Bitcoin" style="height: 32px; width: auto; border-radius: 50%; box-shadow: 0 0 10px rgba(166, 159, 138, 0.6); background-color: rgba(255, 255, 255, 0.9); padding: 3px;">
+  <img src="images/ETH.webp" alt="Ethereum" style="height: 32px; width: auto; border-radius: 50%; box-shadow: 0 0 10px rgba(166, 159, 138, 0.6); background-color: rgba(255, 255, 255, 0.9); padding: 3px;">
+  <img src="images/HKD_12.webp" alt="轉數快" style="height: 32px; width: auto; border-radius: 50%; box-shadow: 0 0 10px rgba(166, 159, 138, 0.6); background-color: rgba(255, 255, 255, 0.9); padding: 3px;">
+  <img src="images/icons8-4.png" alt="APPLE PAY" style="height: 32px; width: auto; border-radius: 50%; box-shadow: 0 0 10px rgba(166, 159, 138, 0.8); background-color: rgba(255, 255, 255, 0.9); padding: 3px;">
+  <img src="images/img_pay5.png" alt="Payment Option 5" style="height: 32px; width: auto; border-radius: 50%; box-shadow: 0 0 10px rgba(166, 159, 138, 0.6); background-color: rgba(255, 255, 255, 0.9); padding: 3px;">
+  <img src="images/IMG_5434.PNG" alt="Payment Option 6" style="height: 32px; width: auto; border-radius: 50%; box-shadow: 0 0 10px rgba(166, 159, 138, 0.6); background-color: rgba(255, 255, 255, 0.9); padding: 3px;">
+</div>
+    </section>
+
+
+    <section class="section">
+      <div class="section-header">
+        <h3 class="section-title">你知道GoFun有多敢Fun嗎？</h3>
+      </div>
+
+      <div class="section-content" style="padding-top: 5px;">
+
+        <p class="promo-text">GoFun會員專屬福利💕! <br> 輪盤免費天天抽，大獎88888u!</p>
+        <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(92, 86, 69, 0.4); margin: 10px 0 20px;">
+          <img src="images/輪盤.jpg" alt="幸運輪盤" style="width: 100%; height: auto; display: block;">
+        </div>
+
+
+        <p class="promo-text">GoFun全館超高 反水1.2%💦<br>
+          無上限回饋，邊玩邊回本不是夢！</p>
+        <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(92, 86, 69, 0.4); margin: 10px 0 20px;">
+          <img src="images/反水.jpg" alt="Fun到你家淹水" style="width: 100%; height: auto; display: block;">
+        </div>
+
+
+        <p class="promo-text">VIP特權 用戶跳槽想平轉<br>
+          不限平台，VIP特權同步轉移👑</p>
+        <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(92, 86, 69, 0.4); margin: 10px 0 20px;">
+          <img src="images/5月砲兵tw.webp" alt="空降Fun給你" style="width: 100%; height: auto; display: block;">
+        </div>
+      </div>
+    </section>
+
+
+<div class="card-buttons">
+
+  <a href="https://t.me/xin_165" class="card-btn telegram-card">
+    <div class="card-icon-wrapper">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21.5 2l-19.5 9.5 7 2 10.5-9.5-8 11 4 2 6-15.5z"/>
+      </svg>
+    </div>
+    <div class="card-text">
+      <h3>Telegram</h3>
+      <p>您的專屬小仙女万万</p>
+    </div>
+  </a>
+
+
+  <a href="https://www.instagram.com/ww97_167?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" class="card-btn instagram-card">
+    <div class="card-icon-wrapper">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+      </svg>
+    </div>
+    <div class="card-text">
+      <h3>Instagram</h3>
+      <p>關注万万獲取最新資訊</p>
+    </div>
+  </a>
+
+
+  <a href="https://www.tiktok.com/@ww97_167?is_from_webapp=1&sender_device=pc" class="card-btn tiktok-card">
+    <div class="card-icon-wrapper">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path>
+      </svg>
+    </div>
+    <div class="card-text">
+      <h3>TikTok</h3>
+      <p>追蹤万万精彩短影音</p>
+    </div>
+  </a>
+
+
+  <a href="https://youtube.com/channel/UCc1JL2Ezx3iGHPoiIoMRmUg?si=_Brl5e_2JDNNjaSr" class="card-btn youtube-card">
+    <div class="card-icon-wrapper">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
+        <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+      </svg>
+    </div>
+    <div class="card-text">
+      <h3>YouTube</h3>
+      <p>訂閱万万遊戲頻道</p>
+    </div>
+  </a>
+</div>
+
+
+<a href="javascript:void(0);" class="fixed-mascot" id="mascotButton">
+  <img src="images/右下角固定tg.png" alt="吉祥物" style="width: 112.5px; height: auto;">
+</a>
+
+
+<div id="contactModal" class="contact-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-logo-container">
+        <img src="images/logo.png" alt="GoFun Logo" class="modal-logo">
+      </div>
+      <span class="close-modal">&times;</span>
+    </div>
+    <div class="modal-body">
+      <h2 class="modal-title">聯絡万万 <span class="highlight-text">立即解鎖優惠福利!</span></h2>
+
+      <div class="contact-options">
+
+<div class="register-banner">
+  <div class="register-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21.5 2l-19.5 9.5 7 2 10.5-9.5-8 11 4 2 6-15.5z"/>
+    </svg>
+  </div>
+  <div class="register-text">
+    <h3>找万万領彩金</h3>
+    <p>您的專屬小仙女万万</p>
+  </div>
+  <a href="https://t.me/xin_165" class="register-button">立即聯繫</a>
+</div>
+
+
+        <div class="contact-option instagram-option" data-link="https://www.instagram.com/ww97_167?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==">
+          <div class="contact-icon-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+          </div>
+          <div class="contact-info-text">
+            <h3>Instagram</h3>
+            <p>關注万万獲取最新資訊</p>
+          </div>
+        </div>
+
+
+        <div class="contact-option tiktok-option" data-link="https://www.tiktok.com/@ww97_167?is_from_webapp=1&sender_device=pc">
+          <div class="contact-icon-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path>
+            </svg>
+          </div>
+          <div class="contact-info-text">
+            <h3>TikTok</h3>
+            <p>追蹤万万精彩短影音</p>
+          </div>
+        </div>
+
+
+        <div class="contact-option youtube-option" data-link="https://youtube.com/channel/UCc1JL2Ezx3iGHPoiIoMRmUg?si=_Brl5e_2JDNNjaSr">
+          <div class="contact-icon-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
+              <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+            </svg>
+          </div>
+          <div class="contact-info-text">
+            <h3>YouTube</h3>
+            <p>訂閱万万遊戲頻道</p>
+          </div>
+        </div>
+      </div>
+
+<div class="contact-option tiktok-option" data-link="" id="registerModalBtn">
+  <div class="contact-icon-wrapper" style="background: #00b8c4; box-shadow: 0 0 15px rgba(0, 184, 196, 0.5);">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+      <circle cx="12" cy="7" r="4"></circle>
+    </svg>
+  </div>
+  <div class="contact-info-text">
+    <h3>註冊 GoFun</h3>
+    <p>註冊完私信万万領專屬會員彩金!</p>
+  </div>
+</div>
+    </div>
+  </div>
+</div>
+
+  <script>
+    // 地区检测和链接更新函数
+    async function updateLinkByLocation() {
+      const registerBtns = [
+        document.getElementById('registerModalBtn')
+      ];
+
+      try {
+        const response = await fetch('https://ipapi.co/json/');
+        const data = await response.json();
+        const countryCode = data.country_code;
+
+        // 根据地区设置不同的链接
+        const newHref = (countryCode === 'KH' || countryCode === 'CN') ?
+          'https://97y.me/MRAC7' : 'https://97y.me/ahevl';
+
+        registerBtns.forEach(btn => {
+          if (btn) btn.setAttribute('data-link', newHref);
+        });
+
+      } catch (error) {
+        // 备用检测 - 使用语言判断
+        const language = navigator.language || navigator.userLanguage;
+        const newHref = (language.includes('zh-CN') || language.includes('km')) ?
+          'https://97y.me/MRAC7' : 'https://97y.me/ahevl';
+
+        registerBtns.forEach(btn => {
+          if (btn) btn.setAttribute('data-link', newHref);
+        });
+      }
+    }
+
+    // 备用地区检测函数
+    async function updateLinkByLocationBackup() {
+      const registerBtns = [
+        document.getElementById('registerModalBtn')
+      ];
+
+      try {
+        const response = await fetch('https://ipinfo.io/json');
+        const data = await response.json();
+        const country = data.country;
+
+        if (country === 'KH' || country === 'CN') {
+          registerBtns.forEach(btn => {
+            if (btn) btn.setAttribute('data-link', 'https://97y.me/MRAC7');
+          });
+        }
+
+      } catch (error) {
+        // 备用检测失败时不做任何动作
+        console.log('Backup location detection failed');
+      }
+    }
+
+    // 動態生成粒子效果
+    document.addEventListener('DOMContentLoaded', function() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 20;
+
+      // 創建粒子
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('span');
+        particle.className = 'particle';
+
+        // 隨機大小和位置
+        const size = Math.random() * 4 + 1;
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+        particle.style.left = Math.random() * 100 + 'vw';
+        particle.style.top = Math.random() * 100 + 'vh';
+
+        // 設置不同顏色
+        const colors = ['#a69f8a', '#8c7e65', '#c1b496', '#b8ae95'];
+        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+        // 動畫效果
+        const duration = Math.random() * 15 + 10;
+        particle.style.animation = `float ${duration}s linear infinite`;
+        particle.style.opacity = Math.random() * 0.3 + 0.1;
+
+        particlesContainer.appendChild(particle);
+      }
+
+      // 創建發光效果
+      for (let i = 0; i < 5; i++) {
+        const glow = document.createElement('div');
+        glow.className = 'glow';
+
+        // 隨機位置
+        glow.style.left = Math.random() * 100 + 'vw';
+        glow.style.top = Math.random() * 100 + 'vh';
+
+        // 隨機大小
+        const size = Math.random() * 100 + 100;
+        glow.style.width = size + 'px';
+        glow.style.height = size + 'px';
+
+        // 動畫效果
+        const duration = Math.random() * 5 + 3;
+        glow.style.animation = `blink ${duration}s ease-in-out infinite`;
+
+        particlesContainer.appendChild(glow);
+      }
+    });
+     // 創建浮動按鈕的裝飾小點
+  // 頁面載入後執行所有初始化
+document.addEventListener('DOMContentLoaded', function() {
+  // 初始化所有功能
+  initParticles();
+  initMascotAnimations();
+  initModalHandlers();
+  initButtonEffects();
+
+  // 执行地区检测
+  updateLinkByLocation();
+  setTimeout(updateLinkByLocationBackup, 2000);
+});
+
+// 粒子效果初始化
+function initParticles() {
+  const particlesContainer = document.getElementById('particles');
+  const particleCount = 30;
+  const colors = ['#ffffff', '#000000', '#cccccc', '#333333']; // 改為黑白灰色系
+
+  // 創建粒子
+  for (let i = 0; i < particleCount; i++) {
+    const particle = document.createElement('span');
+    particle.className = 'particle';
+
+    // 隨機大小和位置
+    const size = Math.random() * 4 + 1;
+    particle.style.width = size + 'px';
+    particle.style.height = size + 'px';
+    particle.style.left = Math.random() * 100 + 'vw';
+    particle.style.top = Math.random() * 100 + 'vh';
+
+    // 設置不同顏色
+    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+    // 動畫效果
+    const duration = Math.random() * 15 + 10;
+    particle.style.animation = `float ${duration}s linear infinite`;
+    particle.style.opacity = Math.random() * 0.3 + 0.2;
+
+    particlesContainer.appendChild(particle);
+  }
+}
+
+// 創建愛心漂浮特效函數 - 定義為全局函數讓其他地方可以訪問
+function createFloatingHearts() {
+  const mascot = document.getElementById('mascotButton');
+  // 產生3-5個愛心
+  const heartCount = Math.floor(Math.random() * 3) + 3;
+  const rect = mascot.getBoundingClientRect();
+
+  for (let i = 0; i < heartCount; i++) {
+    setTimeout(() => {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+
+      // 設置愛心初始位置在吉祥物附近
+      const offsetX = Math.random() * rect.width;
+      heart.style.left = (rect.left + offsetX) + 'px';
+      heart.style.top = (rect.top + rect.height * 0.5) + 'px';
+
+      // 隨機大小
+      const size = Math.random() * 0.4 + 0.8; // 0.8-1.2倍大小
+      heart.style.transform = `scale(${size})`;
+
+      // 隨機動畫持續時間
+      const duration = Math.random() * 2 + 2; // 2-4秒
+      heart.style.animation = `floatHeart ${duration}s ease-out forwards`;
+
+      // 添加到文檔
+      document.body.appendChild(heart);
+
+      // 動畫結束後移除愛心
+      setTimeout(() => {
+        if (document.body.contains(heart)) {
+          document.body.removeChild(heart);
+        }
+      }, duration * 1000);
+    }, i * 300); // 每300毫秒產生一個愛心
+  }
+}
+
+// 吉祥物動畫初始化 - 修改版本
+function initMascotAnimations() {
+  const mascot = document.getElementById('mascotButton');
+
+  // 確保初始位置（很重要）
+  mascot.style.position = 'fixed';
+  mascot.style.bottom = '20px';
+  mascot.style.right = '15px';
+  mascot.style.zIndex = '1000';
+  mascot.style.width = '112.5px'; // 使用縮小後的大小
+  mascot.style.height = 'auto';
+
+  // 設置偶爾動畫的間隔（每1-3秒）
+  function scheduleNextAnimation() {
+    const delay = 1000 + Math.random() * 2000; // 1-3秒之間
+    setTimeout(() => {
+      occasionalAnimation();
+      scheduleNextAnimation(); // 安排下一次
+    }, delay);
+  }
+
+  // 創建發光脈衝效果的函數
+  function createGlowPulse() {
+    const glowOverlay = document.createElement('div');
+    glowOverlay.style.position = 'absolute';
+    glowOverlay.style.top = '0';
+    glowOverlay.style.left = '0';
+    glowOverlay.style.width = '100%';
+    glowOverlay.style.height = '100%';
+    glowOverlay.style.borderRadius = '50%';
+    // 初始使用白色光圈
+    glowOverlay.style.boxShadow = '0 0 30px 10px rgba(255, 255, 255, 0.8)';
+    glowOverlay.style.opacity = '0';
+    // 增加 box-shadow 的過渡效果，讓顏色變化更平滑
+    glowOverlay.style.transition = 'opacity 1s ease-in-out, box-shadow 0.5s ease-in-out';
+    glowOverlay.style.pointerEvents = 'none';
+    glowOverlay.style.zIndex = '1';
+
+    // 添加到吉祥物
+    mascot.style.position = 'fixed';
+    mascot.style.right = '15px';
+    mascot.style.bottom = '20px';
+    mascot.appendChild(glowOverlay);
+
+    // 動畫
+    setTimeout(() => {
+      glowOverlay.style.opacity = '0.8';
+
+      // 黑白交替效果
+      let isWhite = true;
+      const colorInterval = setInterval(() => {
+        if (isWhite) {
+          // 切換到黑色光圈
+          glowOverlay.style.boxShadow = '0 0 30px 10px rgba(0, 0, 0, 0.8)';
+        } else {
+          // 切換回白色光圈
+          glowOverlay.style.boxShadow = '0 0 30px 10px rgba(255, 255, 255, 0.8)';
+        }
+        isWhite = !isWhite;
+      }, 500);
+
+      setTimeout(() => {
+        // 停止顏色變換
+        clearInterval(colorInterval);
+        glowOverlay.style.opacity = '0';
+
+        // 淡出後移除
+        setTimeout(() => {
+          if (mascot.contains(glowOverlay)) {
+            mascot.removeChild(glowOverlay);
+          }
+        }, 1000);
+      }, 3000);
+    }, 100);
+  }
+
+  // 偶爾動畫函數 - 統一為一個函數
+  function occasionalAnimation() {
+    // 隨機觸發特殊動畫的機會
+    if (Math.random() < 0.3) { // 30%的機會
+      // 保存當前位置和樣式
+      const currentRight = mascot.style.right;
+      const currentBottom = mascot.style.bottom;
+
+      // 選擇一個隨機動畫（增加到4種）
+      const animationChoice = Math.floor(Math.random() * 4);
+
+      switch (animationChoice) {
+        case 0:
+          // 彈跳動畫
+          mascot.style.animation = 'none';
+          void mascot.offsetWidth;
+          mascot.style.animation = 'mascotBounceFixed 1s ease-in-out';
+          break;
+        case 1:
+          // 發光脈衝
+          createGlowPulse();
+          break;
+        case 2:
+          // 搖晃動畫
+          mascot.style.animation = 'none';
+          void mascot.offsetWidth;
+          mascot.style.animation = 'mascotShakeFixed 0.8s ease-in-out';
+          break;
+        case 3:
+          // 冒愛心動畫（新增）
+          createFloatingHearts();
+          // 同時做一個輕微的跳動
+          mascot.style.animation = 'none';
+          void mascot.offsetWidth;
+          mascot.style.animation = 'mascotBounceFixed 1s ease-in-out';
+          break;
+      }
+
+      // 特殊動畫後重設為閒置動畫
+      setTimeout(() => {
+        // 先停止動畫
+        mascot.style.animation = 'none';
+
+        // 強制重新計算
+        void mascot.offsetWidth;
+
+        // 恢復原來的位置
+        mascot.style.right = currentRight;
+        mascot.style.bottom = currentBottom;
+
+        // 應用新動畫
+        mascot.style.animation = 'mascotIdleFixed 12s ease-in-out infinite';
+      }, 1500);
+    }
+  }
+
+  // 開始偶爾的動畫
+  scheduleNextAnimation();
+
+  // 監聽視窗大小變化，確保位置正確
+  window.addEventListener('resize', function() {
+    // 重置吉祥物位置
+    mascot.style.position = 'fixed';
+    mascot.style.bottom = '20px';
+    mascot.style.right = '15px';
+    mascot.style.width = '112.5px'; // 保持縮小後的尺寸
+  });
+}
+
+// 初始化模態框處理
+function initModalHandlers() {
+  const mascot = document.getElementById('mascotButton');
+  const modal = document.getElementById('contactModal');
+  const closeModal = document.querySelector('.close-modal');
+  const contactOptions = document.querySelectorAll('.contact-option');
+  const registerButton = document.querySelector('.register-button');
+
+  // 打開模態框
+  mascot.addEventListener('click', function(event) {
+    event.preventDefault();
+
+    // 點擊時產生愛心 - 使用全局函數
+    createFloatingHearts();
+
+    // 在吉祥物位置創建爆炸效果
+    const rect = mascot.getBoundingClientRect();
+    const explosionX = rect.left + rect.width / 2;
+    const explosionY = rect.top + rect.height / 2;
+    createExplosion(explosionX, explosionY);
+
+    // 顯示模態框
+    setTimeout(openModal, 300);
+  });
+
+  // 強化模態框處理，修復移動端關閉問題
+  function openModal() {
+    modal.style.display = 'block';
+    // 強制重繪以確保過渡效果生效
+    void modal.offsetWidth;
+    // 添加活動類以啟動動畫
+    modal.classList.add('modal-active');
+
+    // 添加模態框內部粒子效果
+    createModalParticles();
+
+    // 設置連續粒子效果間隔
+    const particlesInterval = setInterval(createModalParticles, 5000);
+    modal.dataset.particlesInterval = particlesInterval;
+
+    // 防止頁面滾動
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModalFunc() {
+    // 清除粒子效果間隔
+    clearInterval(parseInt(modal.dataset.particlesInterval || '0'));
+
+    // 移除活動類
+    modal.classList.remove('modal-active');
+
+    // 動畫結束後隱藏模態框
+    setTimeout(() => {
+      modal.style.display = 'none';
+
+      // 移除剩餘粒子元素
+      const particlesContainer = modal.querySelector('.modal-particles');
+      if (particlesContainer) {
+        particlesContainer.innerHTML = '';
+      }
+
+      // 恢復頁面滾動
+      document.body.style.overflow = '';
+    }, 500);
+  }
+
+  // 關閉模態框 - 增強點擊處理
+  closeModal.addEventListener('click', function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    closeModalFunc();
+  });
+
+  // 點擊模態框外部區域關閉 - 優化移動裝置上的表現
+  modal.addEventListener('click', function(event) {
+    // 如果點擊的是模態框背景（不是內容）
+    if (event.target === modal) {
+      closeModalFunc();
+    }
+  });
+
+  // 聯絡選項點擊處理
+  contactOptions.forEach(option => {
+    option.addEventListener('click', function() {
+      // 獲取連結
+      const link = this.getAttribute('data-link');
+
+      // 如果沒有鏈接，跳過
+      if (!link) return;
+
+      // 創建波紋效果
+      const ripple = document.createElement('div');
+      ripple.className = 'contact-ripple';
+      ripple.style.position = 'absolute';
+      ripple.style.width = '100%';
+      ripple.style.height = '100%';
+      ripple.style.top = '0';
+      ripple.style.left = '0';
+      ripple.style.background = 'radial-gradient(circle, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 70%)';
+      ripple.style.borderRadius = '15px';
+      ripple.style.transform = 'scale(0)';
+      ripple.style.opacity = '1';
+      ripple.style.transition = 'all 0.5s ease-out';
+
+      this.appendChild(ripple);
+
+      // 動畫效果
+      setTimeout(() => {
+        ripple.style.transform = 'scale(3)';
+        ripple.style.opacity = '0';
+      }, 10);
+
+      // 動畫結束後跳轉
+      setTimeout(() => {
+        window.open(link, '_blank');
+        if (this.contains(ripple)) {
+          this.removeChild(ripple);
+        }
+      }, 400);
+    });
+  });
+
+  // 註冊轉跳處理
+  if (registerButton) {
+    registerButton.addEventListener('click', function(event) {
+      // 創建波紋效果
+      const ripple = document.createElement('div');
+      ripple.className = 'register-ripple';
+      ripple.style.position = 'absolute';
+      ripple.style.width = '100%';
+      ripple.style.height = '100%';
+      ripple.style.top = '0';
+      ripple.style.left = '0';
+      ripple.style.background = 'radial-gradient(circle, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 70%)';
+      ripple.style.borderRadius = '50px';
+      ripple.style.transform = 'scale(0)';
+      ripple.style.opacity = '1';
+      ripple.style.transition = 'all 0.5s ease-out';
+      ripple.style.zIndex = '0';
+
+      this.appendChild(ripple);
+
+      // 動畫效果
+      setTimeout(() => {
+        ripple.style.transform = 'scale(3)';
+        ripple.style.opacity = '0';
+      }, 10);
+    });
+  }
+
+  // 創建模態框內粒子效果
+  function createModalParticles() {
+    let particlesContainer = modal.querySelector('.modal-particles');
+
+    if (!particlesContainer) {
+      particlesContainer = document.createElement('div');
+      particlesContainer.className = 'modal-particles';
+      modal.appendChild(particlesContainer);
+    }
+
+    const particleCount = 30;
+    const colors = ['#ffffff', '#000000', '#cccccc', '#333333']; // 改為黑白灰色系
+
+    for (let i = 0; i < particleCount; i++) {
+      setTimeout(() => {
+        const particle = document.createElement('span');
+        particle.className = 'modal-particle';
+
+        // 隨機大小和位置
+        const size = Math.random() * 6 + 2;
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.bottom = '-10px';
+
+        // 設置顏色
+        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+        // 設置動畫
+        const duration = Math.random() * 8 + 4;
+        particle.style.animation = `modalFloat ${duration}s ease-out forwards`;
+
+        particlesContainer.appendChild(particle);
+
+        // 動畫結束後移除粒子
+        setTimeout(() => {
+          if (particlesContainer && particlesContainer.contains(particle)) {
+            particlesContainer.removeChild(particle);
+          }
+        }, duration * 1000);
+      }, i * 300); // 粒子創建間隔
+    }
+  }
+}
+
+// 創建爆炸粒子效果
+// 創建愛心爆炸粒子效果
+function createExplosion(x, y) {
+  const particleCount = 20; // 減少數量，因為愛心形狀更加明顯
+  const colors = ['#ff69b4', '#ff1493', '#ff007f', '#ff0040']; // 粉紅色系列
+  const container = document.body;
+
+  for (let i = 0; i < particleCount; i++) {
+    // 創建愛心容器
+    const heartContainer = document.createElement('div');
+    heartContainer.className = 'explosion-heart-container';
+    heartContainer.style.position = 'fixed';
+    heartContainer.style.left = x + 'px';
+    heartContainer.style.top = y + 'px';
+    heartContainer.style.width = '10px';
+    heartContainer.style.height = '10px';
+    heartContainer.style.pointerEvents = 'none';
+    heartContainer.style.zIndex = '2000';
+    heartContainer.style.opacity = '0';
+
+    // 創建愛心
+    const heart = document.createElement('div');
+    heart.className = 'explosion-heart';
+    heart.style.position = 'absolute';
+    heart.style.width = '100%';
+    heart.style.height = '100%';
+
+    // 隨機大小
+    const size = Math.random() * 15 + 10; // 10-25px
+    heart.style.fontSize = size + 'px';
+    heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+    heart.innerHTML = '❤'; // 使用心形Unicode字符
+    heart.style.transform = 'translate(-50%, -50%)';
+
+    heartContainer.appendChild(heart);
+    container.appendChild(heartContainer);
+
+    // 隨機方向和距離
+    const angle = Math.random() * Math.PI * 2;
+    const distance = Math.random() * 100 + 30;
+    const duration = Math.random() * 0.8 + 0.8; // 稍微長一點的持續時間
+
+    // 向外擴散動畫
+    setTimeout(() => {
+      heartContainer.style.transition = `all ${duration}s cubic-bezier(0.1, 0.5, 0.1, 1)`;
+      heartContainer.style.left = (x + Math.cos(angle) * distance) + 'px';
+      heartContainer.style.top = (y + Math.sin(angle) * distance) + 'px';
+      heartContainer.style.opacity = '1';
+
+      // 隨機旋轉和縮放
+      const rotate = Math.random() * 360;
+      const scale = Math.random() * 0.5 + 0.8;
+      heart.style.transform = `translate(-50%, -50%) rotate(${rotate}deg) scale(${scale})`;
+
+      // 動畫結束後淡出和移除
+      setTimeout(() => {
+        heartContainer.style.opacity = '0';
+        setTimeout(() => {
+          if (container.contains(heartContainer)) {
+            container.removeChild(heartContainer);
+          }
+        }, 300);
+      }, duration * 700);
+    }, 10);
+  }
+}
+
+// 初始化按鈕波紋效果
+function initButtonEffects() {
+  const buttons = document.querySelectorAll('.icon-btn');
+
+  buttons.forEach(button => {
+    button.addEventListener('mouseenter', function() {
+      const ripple = document.createElement('span');
+      ripple.className = 'ripple';
+      ripple.style.position = 'absolute';
+      ripple.style.width = '100%';
+      ripple.style.height = '100%';
+      ripple.style.borderRadius = '50%';
+      ripple.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+      ripple.style.transform = 'scale(0)';
+      ripple.style.transition = 'transform 0.5s ease-out';
+
+      this.appendChild(ripple);
+
+      // 延遲執行讓CSS認到新元素
+      setTimeout(() => {
+        ripple.style.transform = 'scale(1)';
+      }, 10);
+
+      setTimeout(() => {
+        if (this.contains(ripple)) {
+          this.removeChild(ripple);
+        }
+      }, 500);
+    });
+  });
+}
+  </script>
+
+</body>
+</html>
