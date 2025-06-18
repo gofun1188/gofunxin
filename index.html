@@ -443,6 +443,154 @@ src="https://www.facebook.com/tr?id=496057096794216&ev=PageView&noscript=1"
             opacity: 0.9;
         }
 
+        /* ===== 新增：社交媒体联系区块 ===== */
+        .social-contact-section {
+            margin: 60px 0 40px 0;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, rgba(0, 20, 40, 0.8) 0%, rgba(0, 40, 80, 0.6) 100%);
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .social-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00ffff 0%, #ffffff 50%, #0099cc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .social-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #b3d9ff;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .card-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .card-btn {
+            display: flex;
+            align-items: center;
+            padding: 25px;
+            border-radius: 16px;
+            text-decoration: none;
+            color: #ffffff;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .card-btn:hover::before {
+            left: 100%;
+        }
+
+        .telegram-card {
+            background: linear-gradient(135deg, rgba(0, 136, 204, 0.8) 0%, rgba(0, 150, 255, 0.6) 100%);
+            border-color: rgba(0, 136, 204, 0.5);
+        }
+
+        .telegram-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0, 136, 204, 0.4);
+            border-color: rgba(0, 136, 204, 0.8);
+        }
+
+        .instagram-card {
+            background: linear-gradient(135deg, rgba(225, 48, 108, 0.8) 0%, rgba(188, 42, 141, 0.6) 50%, rgba(81, 91, 212, 0.6) 100%);
+            border-color: rgba(225, 48, 108, 0.5);
+        }
+
+        .instagram-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(225, 48, 108, 0.4);
+            border-color: rgba(225, 48, 108, 0.8);
+        }
+
+        .tiktok-card {
+            background: linear-gradient(135deg, rgba(255, 0, 80, 0.8) 0%, rgba(0, 0, 0, 0.8) 100%);
+            border-color: rgba(255, 0, 80, 0.5);
+        }
+
+        .tiktok-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(255, 0, 80, 0.4);
+            border-color: rgba(255, 0, 80, 0.8);
+        }
+
+        .youtube-card {
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.8) 0%, rgba(255, 87, 87, 0.6) 100%);
+            border-color: rgba(255, 0, 0, 0.5);
+        }
+
+        .youtube-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(255, 0, 0, 0.4);
+            border-color: rgba(255, 0, 0, 0.8);
+        }
+
+        .card-icon-wrapper {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            flex-shrink: 0;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .card-icon-wrapper svg {
+            width: 30px;
+            height: 30px;
+            color: #ffffff;
+        }
+
+        .card-text {
+            flex: 1;
+        }
+
+        .card-text h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #ffffff;
+        }
+
+        .card-text p {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.4;
+        }
+
         /* ===== 修改：浮動雙按鈕 ===== */
         .floating-buttons {
             position: fixed;
@@ -564,6 +712,11 @@ src="https://www.facebook.com/tr?id=496057096794216&ev=PageView&noscript=1"
                 gap: 40px;
             }
 
+            .social-contact-section {
+                margin: 30px 0 20px 0;
+                padding: 20px 15px;
+            }
+
             .floating-buttons {
                 bottom: 10px;
                 gap: 10px;
@@ -594,6 +747,11 @@ src="https://www.facebook.com/tr?id=496057096794216&ev=PageView&noscript=1"
             .app-features {
                 max-width: 100%;
                 padding: 0 20px;
+            }
+
+            .card-buttons {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 15px;
             }
         }
 
@@ -711,6 +869,49 @@ src="https://www.facebook.com/tr?id=496057096794216&ev=PageView&noscript=1"
                 font-size: 1rem;
             }
 
+            .social-contact-section {
+                margin: 40px 0 30px 0;
+                padding: 30px 15px;
+            }
+
+            .social-title {
+                font-size: 2rem;
+                margin-bottom: 15px;
+            }
+
+            .social-subtitle {
+                font-size: 1rem;
+                margin-bottom: 30px;
+            }
+
+            .card-buttons {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .card-btn {
+                padding: 20px;
+            }
+
+            .card-icon-wrapper {
+                width: 50px;
+                height: 50px;
+                margin-right: 15px;
+            }
+
+            .card-icon-wrapper svg {
+                width: 25px;
+                height: 25px;
+            }
+
+            .card-text h3 {
+                font-size: 1.2rem;
+            }
+
+            .card-text p {
+                font-size: 0.9rem;
+            }
+
             .floating-buttons {
                 bottom: 15px;
                 left: 15px;
@@ -800,6 +1001,42 @@ src="https://www.facebook.com/tr?id=496057096794216&ev=PageView&noscript=1"
                 font-size: 0.95rem;
             }
 
+            .social-contact-section {
+                margin: 30px 0 20px 0;
+                padding: 25px 12px;
+            }
+
+            .social-title {
+                font-size: 1.8rem;
+            }
+
+            .social-subtitle {
+                font-size: 0.9rem;
+            }
+
+            .card-btn {
+                padding: 18px;
+            }
+
+            .card-icon-wrapper {
+                width: 45px;
+                height: 45px;
+                margin-right: 12px;
+            }
+
+            .card-icon-wrapper svg {
+                width: 22px;
+                height: 22px;
+            }
+
+            .card-text h3 {
+                font-size: 1.1rem;
+            }
+
+            .card-text p {
+                font-size: 0.85rem;
+            }
+
             .floating-btn {
                 padding: 14px 12px;
                 font-size: 1rem;
@@ -831,6 +1068,10 @@ src="https://www.facebook.com/tr?id=496057096794216&ev=PageView&noscript=1"
             .feature-title {
                 font-size: 1.8rem;
                 letter-spacing: 0.5px;
+            }
+
+            .social-title {
+                font-size: 1.6rem;
             }
 
             .floating-buttons {
@@ -885,7 +1126,7 @@ src="https://www.facebook.com/tr?id=496057096794216&ev=PageView&noscript=1"
         }
 
         @media (max-width: 768px) {
-            .nav-dot, .floating-btn {
+            .nav-dot, .floating-btn, .card-btn {
                 -webkit-tap-highlight-color: transparent;
                 touch-action: manipulation;
             }
@@ -910,6 +1151,10 @@ src="https://www.facebook.com/tr?id=496057096794216&ev=PageView&noscript=1"
 
             .feature-item:hover {
                 transform: translateX(5px);
+            }
+
+            .card-btn:hover {
+                transform: translateY(-5px) scale(1.01);
             }
         }
 
@@ -1011,6 +1256,54 @@ src="https://www.facebook.com/tr?id=496057096794216&ev=PageView&noscript=1"
                     <div class="nav-dot" data-slide="3"></div>
                     <div class="nav-dot" data-slide="4"></div>
                 </div>
+            </div>
+        </section>
+
+        <!-- 新增：社交媒体联系区块 -->
+        <section class="social-contact-section fade-in">
+            <h2 class="social-title">關注万万</h2>
+            <p class="social-subtitle">透過多種管道與万万保持聯繫，獲取最新優惠資訊</p>
+
+            <div class="card-buttons">
+                <a href="https://t.me/xin_165" class="card-btn telegram-card" target="_blank">
+                    <div class="card-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21.5 2l-19.5 9.5 7 2 10.5-9.5-8 11 4 2 6-15.5z"/>
+                        </svg>
+                    </div>
+                    <div class="card-text">
+                        <h3>Telegram</h3>
+                        <p>您的專屬小仙女万万</p>
+                    </div>
+                </a>
+
+                <a href="https://www.instagram.com/ww97_167?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" class="card-btn instagram-card" target="_blank">
+                    <div class="card-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </div>
+                    <div class="card-text">
+                        <h3>Instagram</h3>
+                        <p>關注万万獲取最新資訊</p>
+                    </div>
+                </a>
+
+                <a href="https://www.tiktok.com/@ww97_167?is_from_webapp=1&sender_device=pc" class="card-btn tiktok-card" target="_blank">
+                    <div class="card-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path>
+                        </svg>
+                    </div>
+                    <div class="card-text">
+                        <h3>TikTok</h3>
+                        <p>追蹤万万精彩短影音</p>
+                    </div>
+                </a>
+
+
             </div>
         </section>
 
@@ -1171,6 +1464,9 @@ src="https://www.facebook.com/tr?id=496057096794216&ev=PageView&noscript=1"
                 document.getElementById('contactBtn')
             ];
 
+            // 社交媒体按钮
+            const socialBtns = document.querySelectorAll('.card-btn');
+
             // 注册按钮事件追踪
             registerBtns.forEach(btn => {
                 if (btn) {
@@ -1213,6 +1509,31 @@ src="https://www.facebook.com/tr?id=496057096794216&ev=PageView&noscript=1"
                             fbq('track', 'Contact', {
                                 content_name: '联系万万客服',
                                 content_category: '客户服务',
+                                value: 0.00,
+                                currency: 'USD'
+                            });
+                        }
+
+                        // 涟漪效果
+                        addRippleEffect(this, e);
+                    });
+                }
+            });
+
+            // 社交媒体按钮事件追踪
+            socialBtns.forEach(btn => {
+                if (btn) {
+                    btn.addEventListener('click', function(e) {
+                        const platform = this.classList.contains('telegram-card') ? 'Telegram' :
+                                        this.classList.contains('instagram-card') ? 'Instagram' :
+                                        this.classList.contains('tiktok-card') ? 'TikTok' :
+                                        this.classList.contains('youtube-card') ? 'YouTube' : '未知平台';
+
+                        // Facebook标准事件追踪 - 社交媒体点击
+                        if (typeof fbq !== 'undefined') {
+                            fbq('track', 'Contact', {
+                                content_name: `关注${platform}`,
+                                content_category: '社交媒体',
                                 value: 0.00,
                                 currency: 'USD'
                             });
